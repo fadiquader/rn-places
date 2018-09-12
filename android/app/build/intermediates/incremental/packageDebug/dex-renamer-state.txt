@@ -1,0 +1,4 @@
+#Wed Aug 29 16:16:03 EEST 2018
+base.0=/Users/fadiquader/projects/react-native-course/photos/android/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main
+renamed.0=classes.dex
+file.0=/Users/fadiquader/projects/react-native-course/photos/android/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main/classes.dex
