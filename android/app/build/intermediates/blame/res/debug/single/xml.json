@@ -1,6 +1,10 @@
 [
     {
+        "merged": "/Users/fadiquader/projects/react-native-course/photos/android/app/build/intermediates/res/merged/debug/xml/provider_paths.xml",
+        "source": "/Users/fadiquader/projects/react-native-course/photos/node_modules/react-native-image-picker/android/build/intermediates/packaged_res/debug/xml/provider_paths.xml"
+    },
+    {
         "merged": "/Users/fadiquader/projects/react-native-course/photos/android/app/build/intermediates/res/merged/debug/xml/preferences.xml",
-        "source": "/Users/fadiquader/projects/react-native-course/photos/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.55.4/res/xml/preferences.xml"
+        "source": "/Users/fadiquader/.gradle/caches/transforms-1/files-1.1/react-native-0.55.4.aar/007b04344e5e638e05eca5bb16827558/res/xml/preferences.xml"
     }
 ]

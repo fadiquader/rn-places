@@ -57,7 +57,7 @@ const StoreScreens = createBottomTabNavigator({
 );
 
 const AppScreens = createStackNavigator({
-  StoreScreens
+  StoreScreens,
 }, {
   navigationOptions: {
     title: 'Stores App',
@@ -70,25 +70,27 @@ const AppScreens = createStackNavigator({
   }
 });
 
+const FullAppScreens = createStackNavigator({
+  AppScreens: {
+    screen: AppScreens,
+    navigationOptions: {
+      header: null
+    }
+  },
+  StoreDetail
+});
+
 const AuthScreens = createStackNavigator({
   Login,
   Signup,
 }, {
-  // mode: 'modal',
   headerMode: 'none',
-  // headerMode: 'float',
-  // cardStyle: {
-    // backgroundColor: 'white'
-  // },
-  // navigationOptions: {
-  //   headerBackground: '#eee'
-  // }
 });
 
 
 const AppNavigator = createSwitchNavigator({
   Auth: AuthScreens,
-  App: AppScreens,
+  App: FullAppScreens,
 }, {
   initialRouteName: 'Auth',
 });

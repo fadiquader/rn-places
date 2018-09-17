@@ -15,10 +15,12 @@ const reducer = (state = initialState, action) => {
         stores: state.stores.concat({
           key: Math.random(),
           name: action.storeName,
-          image: {
-            uri:
-              "https://c1.staticflickr.com/5/4096/4744241983_34023bf303_b.jpg"
-          }
+          // image: {
+          //   uri:
+          //     "https://c1.staticflickr.com/5/4096/4744241983_34023bf303_b.jpg"
+          // },
+          image: action.image,
+          location: action.location,
         })
       };
     case DELETE_STORE:

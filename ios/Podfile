@@ -11,6 +11,10 @@ target 'photos' do
   target 'photos-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
+    pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   end
 
   target 'photosTests' do

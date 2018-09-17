@@ -1,0 +1,4 @@
+#Fri Sep 14 19:54:11 EEST 2018
+base.0=/Users/fadiquader/projects/react-native-course/photos/android/app/build/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex
