@@ -5,11 +5,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 //
 import StoreList from '../../components/StoreList';
 import StoreDetail from "../StoreDetail";
+import { getStores } from '../../redux/actions/stores';
 
 class FindStore extends React.Component {
   static navigationOptions = ({ }) => ({
     title: 'Find Store',
   });
+  componentDidMount() {
+    this.props.getStores();
+  }
   itemSelectedHandler = key => {
     const selectedStore = this.props.stores.find(store => store.key === key);
     this.props.navigation.navigate('StoreDetail', {
@@ -35,4 +39,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(FindStore);
+export default connect(mapStateToProps, { getStores })(FindStore);

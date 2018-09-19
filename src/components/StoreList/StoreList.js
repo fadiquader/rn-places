@@ -10,7 +10,7 @@ const storeList = props => {
       data={props.stores}
       renderItem={(info) => (
         <ListItem
-          storeName={info.item.name}
+          storeName={info.item.name || info.item.storeName}
           storeImage={info.item.image}
           onItemPressed={() => props.onItemSelected(info.item.key)}
         />

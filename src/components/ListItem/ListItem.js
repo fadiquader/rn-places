@@ -5,7 +5,7 @@ export const ListItem = props => {
     return (
       <TouchableHighlight onPress={props.onItemPressed}>
         <View style={styles.listItem}>
-          <Image resizeMode="cover" source={props.storeImage} style={styles.storeImage} />
+          <Image resizeMode="cover" source={{uri: props.storeImage}} style={styles.storeImage} />
           <Text>{props.storeName}</Text>
         </View>
       </TouchableHighlight>

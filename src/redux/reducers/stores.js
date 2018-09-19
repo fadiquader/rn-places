@@ -1,6 +1,7 @@
 import {
   ADD_STORE,
-  DELETE_STORE
+  DELETE_STORE,
+  SET_STORES
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -15,10 +16,6 @@ const reducer = (state = initialState, action) => {
         stores: state.stores.concat({
           key: Math.random(),
           name: action.storeName,
-          // image: {
-          //   uri:
-          //     "https://c1.staticflickr.com/5/4096/4744241983_34023bf303_b.jpg"
-          // },
           image: action.image,
           location: action.location,
         })
@@ -29,6 +26,11 @@ const reducer = (state = initialState, action) => {
         stores: state.stores.filter(store => {
           return store.key !== action.storeKey;
         })
+      };
+    case SET_STORES:
+      return {
+        ...state,
+        stores: action.payload
       };
     default:
       return state;

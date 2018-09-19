@@ -13,6 +13,7 @@ import { Login, Signup } from '../screens/Auth';
 import FindStore from '../screens/FindStore';
 import ShareStore from '../screens/ShareStore';
 import StoreDetail from '../screens/StoreDetail';
+import Launch from '../screens/Auth/Launch';
 
 import logo from '../assets/images/logo.png';
 
@@ -89,10 +90,11 @@ const AuthScreens = createStackNavigator({
 
 
 const AppNavigator = createSwitchNavigator({
+  Launch,
   Auth: AuthScreens,
   App: FullAppScreens,
 }, {
-  initialRouteName: 'Auth',
+  initialRouteName: 'Launch',
 });
 
 

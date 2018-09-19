@@ -1,37 +1,30 @@
 import {
-  ADD_STORE,
-  DELETE_STORE,
-  SET_STORES
+  LOADING_AUTH,
+  SET_USER
 } from '../actions/actionTypes';
 
 const initialState = {
-  stores: []
+  loading: false,
+  user: {
+    email: '',
+    idToken: '',
+    localId: '',
+    refreshToken: ''
+  }
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_STORE:
+    case LOADING_AUTH:
       return {
         ...state,
-        stores: state.stores.concat({
-          key: Math.random(),
-          name: action.storeName,
-          image: action.image,
-          location: action.location,
-        })
+        loading: action.payload
       };
-    case DELETE_STORE:
+    case SET_USER:
       return {
         ...state,
-        stores: state.stores.filter(store => {
-          return store.key !== action.storeKey;
-        })
-      };
-    case SET_STORES:
-      return {
-        ...state,
-        stores: action.payload
-      };
+        user: action.payload,
+      }
     default:
       return state;
   }
