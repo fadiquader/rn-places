@@ -8,7 +8,7 @@ import { tryAuth } from '../../redux/actions/auth';
 class Launch extends React.Component {
   componentDidMount() {
     const { navigation }  = this.props;
-    this.props.tryAuth(navigation)
+    this.props.tryAuth(true, navigation)
   }
   render() {
     return <ActivityIndicator size="large" />

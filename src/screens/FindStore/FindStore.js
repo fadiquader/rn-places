@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text, Button, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 //
@@ -20,10 +20,15 @@ class FindStore extends React.Component {
       selectedStore,
     });
   };
+  signout = async () => {
+    await AsyncStorage.clear();
+    this.props.navigation.navigate('Auth')
+  }
   render() {
     const { stores } = this.props;
     return (
       <View>
+        <Button onPress={this.signout} title="sign out" />
         <StoreList
           stores={stores}
           onItemSelected={this.itemSelectedHandler}

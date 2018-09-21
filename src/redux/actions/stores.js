@@ -1,11 +1,12 @@
 import axios from 'axios';
 import {ADD_STORE, DELETE_STORE, SET_STORES} from './actionTypes';
 import { DB_URL } from '../../utils/contants';
+import { tryAuth } from "./auth";
 
 export const addStore = (storeName, location, image) => {
   return async (dispatch, getState) => {
+    await dispatch(tryAuth());
     const idToken = getState().auth.user.idToken;
-
     try {
       const imgRes = await axios.post('https://us-central1-unwomen-6da62.cloudfunctions.net/storeImage', {
         image: image.base64
@@ -27,7 +28,7 @@ export const addStore = (storeName, location, image) => {
       })
       // console.log('res ', res)
     } catch (e) {
-      alert(`Error: ${e.message}`)
+      // alert(`Error: ${e.message}`)
     }
 
   };
@@ -53,7 +54,7 @@ export const getStores = () => {
         payload: data || [],
       })
     } catch (e) {
-      alert(e.message)
+      // alert(e.message)
     }
   }
 }

@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, SafeAreaView, YellowBox } from 'react-native';
 import { Provider } from 'react-redux';
 //
 import AppNavigator from './src/navigator/AppNavigator';
+import NavigationService from './src/navigator/NavigationService';
+
 import configureStore from './src/redux/configureStore';
 //
 
@@ -18,7 +20,11 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <SafeAreaView style={styles.container}>
-          <AppNavigator />
+          <AppNavigator
+            ref={navigatorRef => {
+              NavigationService.setTopLevelNavigator(navigatorRef);
+            }}
+          />
         </SafeAreaView>
       </Provider>
     );

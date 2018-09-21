@@ -1,6 +1,8 @@
 import { AsyncStorage } from 'react-native';
 import axios from 'axios';
+//
 import { TRY_AUTH, LOADING_AUTH, SET_USER } from '../actions/actionTypes';
+import NavigationService from '../../navigator/NavigationService';
 
 const key = 'AIzaSyCKmOY7WhCgmp-SoxfeBXHSPvhXlqCHS5k';
 // const signinURL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=AIzaSyCKmOY7WhCgmp-SoxfeBXHSPvhXlqCHS5k'
@@ -8,31 +10,72 @@ const signinURL = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/ve
 // https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=[API_KEY]
 const signupURL = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${key}`;
 
-const EXPIES_IN = 24;
+const refreshTokenURL = `https://securetoken.googleapis.com/v1/token?key=${key}`;
 
-const expiryDate = (expIn) => {
+const expiryDate = () => {
   const now = new Date();
-  const expDate = now.getTime() + EXPIES_IN * 1000;
-  return expDate;
-}
-export function tryAuth(navigation) {
+  return  now.getTime() + 2 * 1000;
+};
+export function tryAuth(isLanunch=false, Navigation) {
   return async dispatch => {
-    try {
-      const idToken = await AsyncStorage.getItem('@auth:token');
-      if(idToken) {
-        dispatch({
-          type: SET_USER,
-          payload: {
-            idToken
-          },
-        })
-        navigation.navigate('App')
-      } else {
-        navigation.navigate('Auth')
+    return new Promise(async (resolve, reject) => {
+      const navigation =  NavigationService.navigation ? NavigationService : Navigation;
+      try {
+        const [
+          idToken,
+          refreshToken,
+          expDate
+        ] = await Promise.all([
+          AsyncStorage.getItem('@auth:token'),
+          AsyncStorage.getItem('@auth:refreshToken'),
+          AsyncStorage.getItem('@auth:expiryDate')
+        ]);
+        const parsedDate = new Date(parseInt(expDate));
+        const now = new Date();
+        if(!idToken) {
+          throw new Error('Token is not provided')
+        }
+        if(parsedDate < now)  {
+          const res = await axios.post(refreshTokenURL,
+            `grant_type=refresh_token&refresh_token=${refreshToken}`, {
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+            });
+          const now = new Date();
+          const expDate = now.getTime() + 2 * 1000;
+          const data = {
+            idToken: res.data.id_token,
+            refreshToken: res.data.refresh_token,
+            expiryDate: expDate
+
+          };
+          await Promise.all([
+            AsyncStorage.setItem('@auth:token', data.idToken),
+            AsyncStorage.setItem('@auth:refreshToken', data.refreshToken),
+            AsyncStorage.setItem('@auth:expiryDate', data.expiryDate.toString()),
+          ]);
+          dispatch({
+            type: SET_USER,
+            payload: data
+          });
+          if(isLanunch) {
+            navigation.navigate('App')
+          }
+        }
+        else {
+          if(isLanunch) {
+            navigation.navigate('App')
+          }
+        }
+        resolve();
+      } catch (err) {
+        console.log('Caught an exception!', err.response);
+        await AsyncStorage.clear();
+        navigation.navigate('Auth');
+        reject();
       }
-    } catch (e) {
-      navigation.navigate('Auth')
-    }
+    })
   }
 }
 
@@ -55,7 +98,9 @@ export function authSignIn({ email, password, navigation }) {
       });
       const expDate = expiryDate();
       await AsyncStorage.setItem('@auth:token', res.data.idToken);
-      await AsyncStorage.setItem('@auth:expiryDate', expDate);
+      await AsyncStorage.setItem('@auth:refreshToken', res.data.refreshToken);
+      await AsyncStorage.setItem('@auth:expiryDate', expDate.toString());
+      res.data.expiryDate = expDate;
       dispatch({
         type: SET_USER,
         payload: res.data,
@@ -90,7 +135,9 @@ export const authSignup = ({ email, password }) => {
       });
       const expDate = expiryDate();
       await AsyncStorage.setItem('@auth:token', res.data.idToken);
-      await AsyncStorage.setItem('@auth:expiryDate', expDate);
+      await AsyncStorage.setItem('@auth:refreshToken', res.data.refreshToken);
+      await AsyncStorage.setItem('@auth:expiryDate', expDate.toString());
+      res.data.expiryDate = expDate;
       dispatch({
         type: SET_USER,
         payload: res.data,
